@@ -2,9 +2,12 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   _request: Request,
-  { params }: { params: { nombre: string } }
+  context: { params: Promise<{ nombre: string }> }
 ) {
+  // context.params es un Promise, así que lo esperamos:
+  const { nombre } = await context.params;
+
   return NextResponse.json({
-    mensaje: `Hola ${params.nombre}`
+    mensaje: `Hola ${nombre}`
   });
 }
